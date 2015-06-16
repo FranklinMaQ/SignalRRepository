@@ -63,14 +63,10 @@ namespace Chat_SignalR_Biznesowe
             try
             {
                 SignalR = WebApp.Start(ServerURI);
-            
-                MessageBox.Show("Server started. Connect me at localhost.");
             }
             catch (TargetInvocationException ex)
             {
-             
                 Debug.WriteLine(ex.Message.ToString());
-            
                 return;
             }
         }

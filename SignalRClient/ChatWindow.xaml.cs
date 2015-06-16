@@ -46,7 +46,7 @@ namespace SignalRClient
                 users_list.Items.Clear();
                 foreach (KeyValuePair<string, string> entry in dict)
                 {
-                    users_list.Items.Add(entry.Key + " " + entry.Value);
+                    users_list.Items.Add( entry.Value);
                 }
             }));
 
