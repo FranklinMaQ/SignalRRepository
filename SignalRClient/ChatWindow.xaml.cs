@@ -45,6 +45,14 @@ namespace SignalRClient
               
             }));
 
+              chatHub.On<string, string>("SendPriv", (to, message) =>
+            this.Dispatcher.Invoke((Action)delegate
+            {
+               
+                    klienci.Items.Add(String.Format("PRIV: {0}: {1}\r", to, message));
+              
+            }));
+
             chatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
             this.Dispatcher.Invoke((Action)delegate
             {
@@ -78,6 +86,15 @@ namespace SignalRClient
             if(users_list.SelectedIndex == 0)
             {
                 chatHub.Invoke("Send", login, tekst.Text);
+            }
+            else if(users_list.SelectedValue.ToString() == login)
+            {
+                MessageBox.Show("Nie możesz rozmawiać z samym sobą :)", "Krytyczny wyjątek", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+               
+            }
+            else
+            {
+                chatHub.Invoke("SendPrivate", login, users_list.SelectedValue, tekst.Text);
             }
           
         }
@@ -137,8 +154,5 @@ namespace SignalRClient
             chatHub.Invoke("UnMarkUserByID", login);
         }
 
-      
-
-      
     }
 }
