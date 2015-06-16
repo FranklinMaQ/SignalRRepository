@@ -28,7 +28,8 @@ namespace Chat_SignalR_Biznesowe
     /// </summary>
     public partial class MainWindow : Window
     {
-        public IDisposable SignalR { get; set; }
+        bool isStarted = false;
+        private IDisposable SignalR { get; set; }
         const string ServerURI = "http://localhost:8080";
        
 
@@ -47,8 +48,19 @@ namespace Chat_SignalR_Biznesowe
 
         private void run_server_Click(object sender, RoutedEventArgs e)
         {
-           
-            Task.Run(() => StartServer());
+            if (!isStarted)
+            {
+                isStarted = true;
+                btnStart.Content = "Server Stop";
+                Task.Run(() => StartServer());
+            }
+            else
+            {
+                isStarted = false;
+                btnStart.Content = "Server Start";
+                SignalR.Dispose();
+            }
+            
             
         }
 
