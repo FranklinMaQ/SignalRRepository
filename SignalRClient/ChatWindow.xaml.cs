@@ -1,0 +1,116 @@
+﻿using Chat_SignalR_Biznesowe.Authentication;
+using Microsoft.AspNet.SignalR.Client;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+
+namespace SignalRClient
+{
+    /// <summary>
+    /// Interaction logic for ChatWindow.xaml
+    /// </summary>
+    public partial class ChatWindow : Window
+    {
+        private IHubProxy chatHub;
+        private Dictionary<string, User> user_dict;
+        private String login;
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+
+
+        public ChatWindow(IHubProxy chatHub, Dictionary<string, User> user_dict, String login)
+        {
+            InitializeComponent();
+
+            this.chatHub = chatHub;
+            this.user_dict = user_dict;
+            this.login = login;
+
+          
+
+
+            chatHub.Invoke("MarkUserByID", login);
+
+           
+            chatHub.On<string, string>("BroadcastMessage", (name, message) =>
+ this.Dispatcher.Invoke((Action)(() =>
+    klienci.Items.Add(String.Format("{0}: {1}\r", name, message))
+     // Debug.WriteLine("Event")
+     )
+     )
+);
+
+            chatHub.On<string, string>("WhoSending", (me, who) =>
+this.Dispatcher.Invoke((Action)delegate
+{
+    if (me == login)
+    {
+
+        PW_Window pw = new PW_Window(me, who);
+        pw.ShowDialog();
+    }
+
+}));
+
+            chatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
+this.Dispatcher.Invoke((Action)delegate
+{
+    users_list.Items.Clear();
+
+    foreach (KeyValuePair<string, string> entry in dict)
+    {
+        users_list.Items.Add(entry.Key + " " + entry.Value);
+    }
+
+}));
+
+
+         
+
+            chatHub.Invoke("SendLoggedUsersDictionary");
+
+         
+
+        }
+
+
+
+        private void send_Click(object sender, RoutedEventArgs e)
+        {
+            chatHub.Invoke("Send", login, tekst.Text);
+
+        }
+
+      
+        private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item != null)
+            {
+               
+                chatHub.Invoke("WhoIsSendingPWToMe", login, item.Content.ToString());
+                // PW_Window pw = new PW_Window(login, item.Content.ToString());
+            }
+        }
+
+      
+
+        public static void DoEvents()
+        {
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                                                  new Action(delegate { }));
+        }
+
+     
+    }
+}
