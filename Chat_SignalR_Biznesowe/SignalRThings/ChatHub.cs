@@ -26,7 +26,7 @@ namespace Chat_SignalR_Biznesowe
         {
             Clients.All.broadcastMessage(name, message);
         }
-
+        
         public void SendPrivate(string from, string to, string message)
         {
             
