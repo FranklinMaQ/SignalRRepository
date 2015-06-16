@@ -17,7 +17,14 @@ namespace Chat_SignalR_Biznesowe.Authentication
             {
                 if(UserDictionary.Users_dictionary[login].Password == password)
                 {
-                    return true;    // password ok
+                    if(!SignalRThings.ConnectedUsersList.ConnectedUsers.ContainsValue(login))
+                    {
+                        return true;    // password ok
+                    }
+                    else
+                    {
+                        return false;   // already logged
+                    }
                 }
                 else
                 {

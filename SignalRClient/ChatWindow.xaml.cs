@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -31,13 +32,27 @@ namespace SignalRClient
             this.chatHub = chatHub;
        //     this.user_dict = user_dict;
             this.login = login;
-
+            users_list.SelectedIndex = 0;
             chatHub.Invoke("MarkUserByID", login);
 
+     
+
             chatHub.On<string, string>("BroadcastMessage", (name, message) =>
-            this.Dispatcher.Invoke((Action)(() =>
-            klienci.Items.Add(String.Format("{0}: {1}\r", name, message))
-            )));
+            this.Dispatcher.Invoke((Action)delegate
+            {
+                if (users_list.SelectedIndex == 0)       // wybrana opcja WSZYSCY
+                {
+                    klienci.Items.Add(String.Format("{0}: {1}\r", name, message));
+                }
+                else if (users_list.SelectedValue.ToString() == login)       // opcja - login
+                {
+                    MessageBox.Show("Nie możesz pisać do samego siebie :)", "Uwaga", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+
+                }
+            }));
 
             chatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
             this.Dispatcher.Invoke((Action)delegate
@@ -45,6 +60,8 @@ namespace SignalRClient
                 Debug.WriteLine("sadas");
                 user_dict = dict;
                 users_list.Items.Clear();
+                users_list.Items.Add("WSZYSCY");
+                users_list.SelectedIndex = 0;
                 foreach (KeyValuePair<string, string> entry in dict)
                 {
                     users_list.Items.Add( entry.Value); 
@@ -52,6 +69,15 @@ namespace SignalRClient
             }));
 
             chatHub.Invoke("SendLoggedUsersDictionary");
+        }
+
+      public bool AmILogged(String login)
+        {
+          if(users_list.Items.Contains(login))
+          {
+              return true;
+          }
+          return false;
         }
 
         private void send_Click(object sender, RoutedEventArgs e)
