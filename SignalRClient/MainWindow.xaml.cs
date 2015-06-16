@@ -36,9 +36,20 @@ namespace SignalRClient
             chatHub = connection.CreateHubProxy("chatHub");
             connection.Start().Wait();
 
-            ChatWindow chat_window = new ChatWindow(chatHub, UserDictionary.Users_dictionary,  login.Text);
-            chat_window.Show();
-            this.Hide();
+            bool canUserAuthenticate = chatHub.Invoke<bool>("CanAuthenticate", login.Text, password.Password).Result;
+
+                if(canUserAuthenticate == true)
+                {
+                    ChatWindow chat_window = new ChatWindow(chatHub, UserDictionary.Users_dictionary, login.Text);
+                    chat_window.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Użytkownik nie istnieje lub podane złe hasło! Spróbuj ponownie!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+           
             }
             catch(Exception he)
             {
