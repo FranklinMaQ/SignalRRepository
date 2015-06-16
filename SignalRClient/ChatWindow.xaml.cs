@@ -40,19 +40,9 @@ namespace SignalRClient
             chatHub.On<string, string>("BroadcastMessage", (name, message) =>
             this.Dispatcher.Invoke((Action)delegate
             {
-                if (users_list.SelectedIndex == 0)       // wybrana opcja WSZYSCY
-                {
+               
                     klienci.Items.Add(String.Format("{0}: {1}\r", name, message));
-                }
-                else if (users_list.SelectedValue.ToString() == login)       // opcja - login
-                {
-                    MessageBox.Show("Nie możesz pisać do samego siebie :)", "Uwaga", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                   
-                   
-                }
+              
             }));
 
             chatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
@@ -85,7 +75,11 @@ namespace SignalRClient
 
         private void send_Click(object sender, RoutedEventArgs e)
         {
-            chatHub.Invoke("Send", login, tekst.Text);
+            if(users_list.SelectedIndex == 0)
+            {
+                chatHub.Invoke("Send", login, tekst.Text);
+            }
+          
         }
 
         private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
