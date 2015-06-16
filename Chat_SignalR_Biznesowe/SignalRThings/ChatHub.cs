@@ -20,7 +20,6 @@ namespace Chat_SignalR_Biznesowe
         public void SendLoggedUsersDictionary()
         {
             Clients.All.SendDict(SignalRThings.ConnectedUsersList.ConnectedUsers);
-            Debug.WriteLine("test");
         }
 
         public void Send(string name, string message)
@@ -34,6 +33,12 @@ namespace Chat_SignalR_Biznesowe
             SignalRThings.ConnectedUsersList.ConnectedUsers.Add(Context.ConnectionId.ToString(), username);
             Debug.WriteLine(Context.ConnectionId.ToString() + " " + username);
             Debug.WriteLine(SignalRThings.ConnectedUsersList.ConnectedUsers.Count.ToString() + " : items");
+            Clients.All.broadcastMessage("Server", username+" has connected");
+        }
+
+        public void UnMarkUserByID(string login)
+        {
+            MainWindow.referencja.deleteUserFromList(login);
         }
     
         public override Task OnConnected()
@@ -45,6 +50,14 @@ namespace Chat_SignalR_Biznesowe
         public override Task OnDisconnected(bool stopCalled)
         {
             return base.OnDisconnected(stopCalled);
+        }
+
+        public void disconnect(String id)
+        {
+            string login= SignalRThings.ConnectedUsersList.ConnectedUsers[id];
+            SignalRThings.ConnectedUsersList.ConnectedUsers.Remove(id);
+            Clients.All.broadcastMessage("Server", login+" has disconnected! ");
+            Clients.All.SendDict(SignalRThings.ConnectedUsersList.ConnectedUsers);
         }
     }
 }

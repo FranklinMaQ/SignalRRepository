@@ -40,7 +40,7 @@ namespace SignalRClient
 
                 if(canUserAuthenticate == true)
                 {
-                    ChatWindow chat_window = new ChatWindow(chatHub, UserDictionary.Users_dictionary, login.Text);
+                    ChatWindow chat_window = new ChatWindow(chatHub, login.Text);
                     chat_window.Show();
                     this.Hide();
                 }

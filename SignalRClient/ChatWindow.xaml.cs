@@ -20,16 +20,16 @@ namespace SignalRClient
     public partial class ChatWindow : Window
     {
         private IHubProxy chatHub;
-        private Dictionary<string, User> user_dict;
+        private Dictionary<string, string> user_dict;
         private String login;
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
 
-        public ChatWindow(IHubProxy chatHub, Dictionary<string, User> user_dict, String login)
+        public ChatWindow(IHubProxy chatHub, String login)
         {
             InitializeComponent();
             this.chatHub = chatHub;
-            this.user_dict = user_dict;
+       //     this.user_dict = user_dict;
             this.login = login;
 
             chatHub.Invoke("MarkUserByID", login);
@@ -43,10 +43,11 @@ namespace SignalRClient
             this.Dispatcher.Invoke((Action)delegate
             {
                 Debug.WriteLine("sadas");
+                user_dict = dict;
                 users_list.Items.Clear();
                 foreach (KeyValuePair<string, string> entry in dict)
                 {
-                    users_list.Items.Add( entry.Value);
+                    users_list.Items.Add( entry.Value); 
                 }
             }));
 
@@ -95,10 +96,22 @@ namespace SignalRClient
                 tekst.Text = "";
             }
         }
+        private string getId()
+        {
+            foreach(KeyValuePair<string, string> entry in user_dict)
+            {
+                if(entry.Value==login)
+                {
+                    return entry.Key;
+                }
+            }
+            return "";
+        }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-           
+            chatHub.Invoke("disconnect",getId());
+            chatHub.Invoke("UnMarkUserByID", login);
         }
 
       

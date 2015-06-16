@@ -60,6 +60,7 @@ namespace Chat_SignalR_Biznesowe
                 SignalR.Dispose();
                 lblStatus.Content = "Server status: Offline";
                 lblStatus.Foreground = new SolidColorBrush(Colors.Red);
+                ListBoxClients.Items.Clear();
             }
         }
         private void StartServer()
@@ -73,6 +74,15 @@ namespace Chat_SignalR_Biznesowe
                 Debug.WriteLine(ex.Message.ToString());
                 return;
             }
+        }
+
+        public void deleteUserFromList(String login)
+        {
+            
+            Dispatcher.BeginInvoke(new Action(delegate() //Bo watek niema dostępu do kontrolek
+            {
+                ListBoxClients.Items.Remove(login);
+            }));
         }
     }
 }
