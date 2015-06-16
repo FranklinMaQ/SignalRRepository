@@ -45,6 +45,7 @@ namespace Chat_SignalR_Biznesowe
 
         public void MarkUserByID(String username)       // dodaj uzytkownika do haszmapy po id
         {
+            MainWindow.referencja.AddClientInfo(username);
             SignalRThings.ConnectedUsersList.ConnectedUsers.Add(Context.ConnectionId.ToString(), username);
             Debug.WriteLine(Context.ConnectionId.ToString() + " " + username);
 

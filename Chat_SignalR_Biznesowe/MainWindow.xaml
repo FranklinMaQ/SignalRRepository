@@ -8,7 +8,7 @@
             <ColumnDefinition Width="305*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="btnStart" Content="Server start" HorizontalAlignment="Left" Margin="171,36,0,0" VerticalAlignment="Top" Width="146" Click="run_server_Click" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="clients_info" HorizontalAlignment="Left" Height="100" Margin="73,83,0,0" VerticalAlignment="Top" Width="363" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="ListBoxClients" HorizontalAlignment="Left" Height="100" Margin="73,83,0,0" VerticalAlignment="Top" Width="363" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

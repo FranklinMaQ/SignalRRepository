@@ -23,29 +23,26 @@ using Chat_SignalR_Biznesowe.Authentication;
 
 namespace Chat_SignalR_Biznesowe
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         bool isStarted = false;
+        public static MainWindow referencja;
         private IDisposable SignalR { get; set; }
         const string ServerURI = "http://localhost:8080";
-       
-
-
         public MainWindow()
         {
             InitializeComponent();
-            
-            
+            if (referencja == null)
+                referencja = this;
         }
-        
         public void AddClientInfo(String text)
         {
-            clients_info.Items.Add(text);
+            Dispatcher.BeginInvoke(new Action(delegate() //Bo watek niema dostępu do kontrolek
+            {
+                ListBoxClients.Items.Add(text);
+            }));
+            //ListBoxClients.Items.Add(text);
         }
-
         private void run_server_Click(object sender, RoutedEventArgs e)
         {
             if (!isStarted)
@@ -60,12 +57,7 @@ namespace Chat_SignalR_Biznesowe
                 btnStart.Content = "Server Start";
                 SignalR.Dispose();
             }
-            
-            
         }
-
-    
-
         private void StartServer()
         {
             try
@@ -81,13 +73,6 @@ namespace Chat_SignalR_Biznesowe
             
                 return;
             }
-         
-
         }
-
-     
-
-
-     
-        }
+    }
 }

@@ -31,17 +31,10 @@ namespace SignalRClient
         public ChatWindow(IHubProxy chatHub, Dictionary<string, User> user_dict, String login)
         {
             InitializeComponent();
-
             this.chatHub = chatHub;
             this.user_dict = user_dict;
             this.login = login;
-
-          
-
-
             chatHub.Invoke("MarkUserByID", login);
-
-           
             chatHub.On<string, string>("BroadcastMessage", (name, message) =>
  this.Dispatcher.Invoke((Action)(() =>
     klienci.Items.Add(String.Format("{0}: {1}\r", name, message))
@@ -75,11 +68,11 @@ this.Dispatcher.Invoke((Action)delegate
 }));
 
 
-         
+
 
             chatHub.Invoke("SendLoggedUsersDictionary");
 
-         
+
 
         }
 
@@ -91,19 +84,19 @@ this.Dispatcher.Invoke((Action)delegate
 
         }
 
-      
+
         private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
             if (item != null)
             {
-               
+
                 chatHub.Invoke("WhoIsSendingPWToMe", login, item.Content.ToString());
                 // PW_Window pw = new PW_Window(login, item.Content.ToString());
             }
         }
 
-      
+
 
         public static void DoEvents()
         {
@@ -111,6 +104,6 @@ this.Dispatcher.Invoke((Action)delegate
                                                   new Action(delegate { }));
         }
 
-     
+
     }
 }

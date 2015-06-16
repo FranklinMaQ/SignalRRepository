@@ -112,7 +112,6 @@
     <Compile Include="Authentication\UserDictionary.cs" />
     <Compile Include="SignalRThings\ChatHub.cs" />
     <Compile Include="SignalRThings\ConnectedUsersList.cs" />
-    <Compile Include="SignalRThings\PrivateChatHub.cs" />
     <Compile Include="SignalRThings\Startup.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
