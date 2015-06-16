@@ -51,9 +51,10 @@ namespace SignalRClient
 
            
             }
-            catch(Exception he)
+            catch(Exception x)
             {
                 MessageBox.Show("Serwer nie znaleziony! Czy został uruchomiony?", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
+                Debug.WriteLine(x.ToString());
             }
    }
 
