@@ -25,7 +25,29 @@ namespace Chat_SignalR_Biznesowe
         public void Send(string name, string message)
         {
             Clients.All.broadcastMessage(name, message);
-        }     
+        }
+
+        public void SendPrivate(string from, string to, string message)
+        {
+            
+            string sender_id = getId(from);
+            string receiver_id = getId(to);
+            Clients.Client(sender_id).SendPriv("@" + to, message);
+            Clients.Client(receiver_id).SendPriv("@" + from, message);
+        }
+
+        private string getId(string login)
+        {
+            foreach (KeyValuePair<string, string> entry in SignalRThings.ConnectedUsersList.ConnectedUsers)
+            {
+                if (entry.Value == login)
+                {
+                    return entry.Key;
+                }
+            }
+            return "";
+        }
+     
 
         public void MarkUserByID(String username)       // dodaj uzytkownika do haszmapy po id
         {

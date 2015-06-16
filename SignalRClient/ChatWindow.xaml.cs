@@ -35,7 +35,7 @@ namespace SignalRClient
             users_list.SelectedIndex = 0;
             chatHub.Invoke("MarkUserByID", login);
 
-     
+            lblLog.Content = "Zalogowany jako: " + login;
 
             chatHub.On<string, string>("BroadcastMessage", (name, message) =>
             this.Dispatcher.Invoke((Action)delegate
@@ -50,7 +50,8 @@ namespace SignalRClient
                 }
                 else
                 {
-
+                   
+                   
                 }
             }));
 
@@ -76,6 +77,8 @@ namespace SignalRClient
           if(users_list.Items.Contains(login))
           {
               return true;
+              
+              
           }
           return false;
         }
@@ -139,6 +142,8 @@ namespace SignalRClient
             chatHub.Invoke("disconnect",getId());
             chatHub.Invoke("UnMarkUserByID", login);
         }
+
+      
 
       
     }
