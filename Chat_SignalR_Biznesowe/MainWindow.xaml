@@ -3,12 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Chat - serwer" Height="350" Width="525">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="212*"/>
-            <ColumnDefinition Width="305*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="btnStart" Content="Server start" HorizontalAlignment="Left" Margin="171,36,0,0" VerticalAlignment="Top" Width="146" Click="run_server_Click" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="ListBoxClients" HorizontalAlignment="Left" Height="100" Margin="73,83,0,0" VerticalAlignment="Top" Width="363" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnStart" Content="Server start" HorizontalAlignment="Left" Margin="171,36,0,0" VerticalAlignment="Top" Width="146" Click="run_server_Click" Grid.ColumnSpan="2" FontWeight="Bold"/>
+        <ListBox x:Name="ListBoxClients" HorizontalAlignment="Left" Height="100" Margin="73,98,0,0" VerticalAlignment="Top" Width="363"/>
+        <Label x:Name="lblStatus" Content="Server status: offline" HorizontalAlignment="Left" Margin="73,216,0,0" VerticalAlignment="Top" Height="37" Width="363" HorizontalContentAlignment="Center" FontWeight="Bold" Foreground="Red"/>
+        <Label Content="Current Users" HorizontalAlignment="Left" Margin="73,64,0,0" VerticalAlignment="Top" Width="119" Height="29" RenderTransformOrigin="0.264,-0.222"/>
 
     </Grid>
 </Window>

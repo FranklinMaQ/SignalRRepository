@@ -96,6 +96,11 @@ namespace SignalRClient
             }
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+           
+        }
+
       
     }
 }

@@ -50,12 +50,16 @@ namespace Chat_SignalR_Biznesowe
                 isStarted = true;
                 btnStart.Content = "Server Stop";
                 Task.Run(() => StartServer());
+                lblStatus.Content = "Server status: Online";
+                lblStatus.Foreground = new SolidColorBrush(Colors.Green);
             }
             else
             {
                 isStarted = false;
                 btnStart.Content = "Server Start";
                 SignalR.Dispose();
+                lblStatus.Content = "Server status: Offline";
+                lblStatus.Foreground = new SolidColorBrush(Colors.Red);
             }
         }
         private void StartServer()
