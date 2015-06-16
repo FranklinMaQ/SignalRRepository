@@ -23,11 +23,11 @@ namespace Chat_SignalR_Biznesowe.Authentication
             set { users_dictionary = value; }
         }
 
-        static UserDictionary()
+        static UserDictionary()//someday repleace with DB
         {
             users_dictionary.Add("MaQ", new User("MaQ", "qwerty", Color.Green));
             users_dictionary.Add("VELO", new User("VELO", "qwerty", Color.Red));
-            users_dictionary.Add("Pablo", new User("Pablo", "qwerty", Color.Red));
+            users_dictionary.Add("Pablo", new User("Pablo", "qwerty", Color.Blue));
         }
 
         public static bool UserExist(String username)

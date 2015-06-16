@@ -20,7 +20,6 @@ namespace Chat_SignalR_Biznesowe.Authentication
             get { return id; }
             set { id = value; }
         }
-     
 
         public User(String username, String password, Color color)
         {
@@ -33,15 +32,13 @@ namespace Chat_SignalR_Biznesowe.Authentication
             get { return username; }
             set { username = value; }
         }
-       
-
+ 
         public String Password
         {
             get { return password; }
             set { password = value; }
         }
        
-
         public Color Color
         {
             get { return color; }

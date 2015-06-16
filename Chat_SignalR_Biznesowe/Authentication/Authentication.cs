@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Chat_SignalR_Biznesowe.Authentication
 {
-    public class Authentication
+    public static class Authentication
     {
         public static bool CanAuthenticate(String login, String password, String id)
         {
@@ -17,11 +17,6 @@ namespace Chat_SignalR_Biznesowe.Authentication
             {
                 if(UserDictionary.Users_dictionary[login].Password == password)
                 {
-                    var x = GlobalHost.ConnectionManager.GetHubContext("chatHub");
-                    User u = new User(login, password, Color.Red);
-                    x.Clients.Client(id).SendOnlyToMe(UserDictionary.Active);
-                    UserDictionary.Active.Add(login, u);
-                    x.Clients.All.UpdateActiveList(u);
                     return true;    // password ok
                 }
                 else

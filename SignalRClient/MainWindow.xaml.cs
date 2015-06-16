@@ -18,9 +18,6 @@ using System.Windows.Shapes;
 
 namespace SignalRClient
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         IHubProxy chatHub;
@@ -28,33 +25,22 @@ namespace SignalRClient
 
         public MainWindow()
         {
-            InitializeComponent();
-
-            
-          
+            InitializeComponent(); 
         }
 
-      
-
         private void connect_to_hub_Click(object sender, RoutedEventArgs e)
-        {
-            
+        { 
             try
             {
-
-            
             connection = new HubConnection("http://" + ip_address.Text + ":8080");
             chatHub = connection.CreateHubProxy("chatHub");
-            
-
             connection.Start().Wait();
-
-     
 
             ChatWindow chat_window = new ChatWindow(chatHub, UserDictionary.Users_dictionary,  login.Text);
             chat_window.Show();
+            this.Hide();
             }
-            catch(HubException he)
+            catch(Exception he)
             {
                 MessageBox.Show("Serwer nie znaleziony! Czy został uruchomiony?", "Błąd!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
