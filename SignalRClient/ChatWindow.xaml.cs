@@ -74,5 +74,28 @@ namespace SignalRClient
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                                                   new Action(delegate { }));
         }
+
+        private void tekst_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            tekst.Text = "";
+
+           
+        }
+
+      
+
+     
+
+        private void tekst_KeyDown(object sender, KeyEventArgs e)
+        {            
+
+            if (e.Key == Key.Enter)
+            {
+                chatHub.Invoke("Send", login, tekst.Text);
+                tekst.Text = "";
+            }
+        }
+
+      
     }
 }
