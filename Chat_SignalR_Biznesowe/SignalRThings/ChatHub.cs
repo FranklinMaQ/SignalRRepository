@@ -32,8 +32,8 @@ namespace Chat_SignalR_Biznesowe
             
             string sender_id = getId(from);
             string receiver_id = getId(to);
-            Clients.Client(sender_id).SendPriv("@" + to, message);
-            Clients.Client(receiver_id).SendPriv("@" + from, message);
+            Clients.Client(sender_id).SendPriv("@ To " + to, message);
+            Clients.Client(receiver_id).SendPriv("@ From " + from, message);
         }
 
         private string getId(string login)
