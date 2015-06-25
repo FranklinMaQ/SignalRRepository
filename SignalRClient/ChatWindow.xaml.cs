@@ -101,31 +101,14 @@ namespace SignalRClient
           
         }
 
-        private void PlaceholdersListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
-            if (item != null)
-            {
-
-                connection.ChatHub.Invoke("WhoIsSendingPWToMe", login, item.Content.ToString());
-                // PW_Window pw = new PW_Window(login, item.Content.ToString());
-            }
-        }
-
-        public static void DoEvents()
-        {
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
-                                                  new Action(delegate { }));
-        }
+      
 
         private void tekst_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             tekst.Text = "";
 
            
-        }
-
-      
+        }      
 
      
 
@@ -134,7 +117,19 @@ namespace SignalRClient
 
             if (e.Key == Key.Enter)
             {
-                connection.ChatHub.Invoke("Send", login, tekst.Text);
+                if (users_list.SelectedIndex == 0)
+                {
+                    connection.ChatHub.Invoke("Send", login, tekst.Text);
+                }
+                else if (users_list.SelectedValue.ToString() == login)
+                {
+                    MessageBox.Show("Nie możesz rozmawiać z samym sobą :)", "Krytyczny wyjątek", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+                }
+                else
+                {
+                    connection.ChatHub.Invoke("SendPrivate", login, users_list.SelectedValue, tekst.Text);
+                }
                 tekst.Text = "";
             }
         }

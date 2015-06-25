@@ -28,8 +28,7 @@ namespace Chat_SignalR_Biznesowe
         }
         
         public void SendPrivate(string from, string to, string message)
-        {
-            
+        {            
             string sender_id = getId(from);
             string receiver_id = getId(to);
             Clients.Client(sender_id).SendPriv("@ To " + to, message);
@@ -55,7 +54,7 @@ namespace Chat_SignalR_Biznesowe
             SignalRThings.ConnectedUsersList.ConnectedUsers.Add(Context.ConnectionId.ToString(), username);
             Debug.WriteLine(Context.ConnectionId.ToString() + " " + username);
             Debug.WriteLine(SignalRThings.ConnectedUsersList.ConnectedUsers.Count.ToString() + " : items");
-            Clients.All.broadcastMessage("Server", username+" has connected");
+            Clients.All.broadcastMessage("Server", username + " has connected");
         }
 
         public void UnMarkUserByID(string login)
@@ -78,7 +77,7 @@ namespace Chat_SignalR_Biznesowe
         {
             string login= SignalRThings.ConnectedUsersList.ConnectedUsers[id];
             SignalRThings.ConnectedUsersList.ConnectedUsers.Remove(id);
-            Clients.All.broadcastMessage("Server", login+" has disconnected! ");
+            Clients.All.broadcastMessage("Server", login + " has disconnected! ");
             Clients.All.SendDict(SignalRThings.ConnectedUsersList.ConnectedUsers);
         }
     }
