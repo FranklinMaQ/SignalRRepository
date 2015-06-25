@@ -11,7 +11,7 @@ namespace Chat_SignalR_Biznesowe.Authentication
 {
     public static class Authentication
     {
-        public static bool CanAuthenticate(String login, String password, String id)
+        public static bool CanAuthenticate(String login, String password)
         {
             if(UserDictionary.UserExist(login))
             {

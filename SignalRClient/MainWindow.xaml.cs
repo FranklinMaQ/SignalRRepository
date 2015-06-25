@@ -1,5 +1,6 @@
 ﻿using Chat_SignalR_Biznesowe.Authentication;
 using Microsoft.AspNet.SignalR.Client;
+using SignalRClient.ClientSignalRThings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,27 +21,25 @@ namespace SignalRClient
 {
     public partial class MainWindow : Window
     {
-        IHubProxy chatHub;
-        HubConnection connection;
+        IChatHubConnection connection;
 
         public MainWindow()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            connection = new ChatHubConnection();
         }
 
         private void connect_to_hub_Click(object sender, RoutedEventArgs e)
         { 
             try
             {
-            connection = new HubConnection("http://" + ip_address.Text + ":8080");
-            chatHub = connection.CreateHubProxy("chatHub");
-            connection.Start().Wait();
+                connection.ConnectToChatHub(ip_address.Text);
 
-            bool canUserAuthenticate = chatHub.Invoke<bool>("CanAuthenticate", login.Text, password.Password).Result;
+                bool canUserAuthenticate = connection.CanUserAuthenticate(login.Text, password.Password);
 
                 if(canUserAuthenticate == true)
                 {
-                    ChatWindow chat_window = new ChatWindow(chatHub, login.Text);
+                    ChatWindow chat_window = new ChatWindow(connection, login.Text);
                     chat_window.Show();
                     this.Hide();
                 }
@@ -61,7 +60,8 @@ namespace SignalRClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             
-            connection.Dispose();
+          
+            connection.Connection.Dispose();
             
         }
 

@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Drawing;
 using Chat_SignalR_Biznesowe.Authentication;
+using Chat_SignalR_Biznesowe.SignalRThings;
 
 namespace Chat_SignalR_Biznesowe
 {
@@ -27,17 +28,19 @@ namespace Chat_SignalR_Biznesowe
     {
         bool isStarted = false;
         public static MainWindow referencja;
-        private IDisposable SignalR { get; set; }
-        const string ServerURI = "http://localhost:8080";
+        private IServer server;
+        
+        
         public MainWindow()
         {
             InitializeComponent();
             if (referencja == null)
                 referencja = this;
+            server = new Server();
         }
         public void AddClientInfo(String text)
         {
-            Dispatcher.BeginInvoke(new Action(delegate() //Bo watek niema dostępu do kontrolek
+            Dispatcher.BeginInvoke(new Action(delegate() //Bo watek nie ma dostępu do kontrolek
             {
                 ListBoxClients.Items.Add(text);
             }));
@@ -49,7 +52,7 @@ namespace Chat_SignalR_Biznesowe
             {
                 isStarted = true;
                 btnStart.Content = "Server Stop";
-                Task.Run(() => StartServer());
+                server.StartServer("http://localhost:8080");
                 lblStatus.Content = "Server status: Online";
                 lblStatus.Foreground = new SolidColorBrush(Colors.Green);
             }
@@ -57,24 +60,13 @@ namespace Chat_SignalR_Biznesowe
             {
                 isStarted = false;
                 btnStart.Content = "Server Start";
-                SignalR.Dispose();
+                server.DisposeServer();            
                 lblStatus.Content = "Server status: Offline";
                 lblStatus.Foreground = new SolidColorBrush(Colors.Red);
                 ListBoxClients.Items.Clear();
             }
         }
-        private void StartServer()
-        {
-            try
-            {
-                SignalR = WebApp.Start(ServerURI);
-            }
-            catch (TargetInvocationException ex)
-            {
-                Debug.WriteLine(ex.Message.ToString());
-                return;
-            }
-        }
+       
 
         public void deleteUserFromList(String login)
         {

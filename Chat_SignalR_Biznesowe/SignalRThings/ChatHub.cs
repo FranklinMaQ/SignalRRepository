@@ -14,7 +14,7 @@ namespace Chat_SignalR_Biznesowe
 
         public bool CanAuthenticate(String username, String password)
         {
-            return Authentication.Authentication.CanAuthenticate(username, password, Context.ConnectionId.ToString());   
+            return Authentication.Authentication.CanAuthenticate(username, password);   
         }
 
         public void SendLoggedUsersDictionary()

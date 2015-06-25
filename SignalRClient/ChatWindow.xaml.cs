@@ -1,5 +1,6 @@
 ﻿using Chat_SignalR_Biznesowe.Authentication;
 using Microsoft.AspNet.SignalR.Client;
+using SignalRClient.ClientSignalRThings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,24 +21,25 @@ namespace SignalRClient
 {
     public partial class ChatWindow : Window
     {
-        private IHubProxy chatHub;
+      //  private IHubProxy chatHub;
+        private IChatHubConnection connection;
         private Dictionary<string, string> user_dict;
         private String login;
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
 
-        public ChatWindow(IHubProxy chatHub, String login)
+        public ChatWindow(IChatHubConnection connection, String login)
         {
             InitializeComponent();
-            this.chatHub = chatHub;
+            this.connection = connection;
        //     this.user_dict = user_dict;
             this.login = login;
             users_list.SelectedIndex = 0;
-            chatHub.Invoke("MarkUserByID", login);
+            connection.ChatHub.Invoke("MarkUserByID", login);
 
             lblLog.Content = "Zalogowany jako: " + login;
 
-            chatHub.On<string, string>("BroadcastMessage", (name, message) =>
+            connection.ChatHub.On<string, string>("BroadcastMessage", (name, message) =>
             this.Dispatcher.Invoke((Action)delegate
             {
                
@@ -45,7 +47,7 @@ namespace SignalRClient
               
             }));
 
-              chatHub.On<string, string>("SendPriv", (to, message) =>
+            connection.ChatHub.On<string, string>("SendPriv", (to, message) =>
             this.Dispatcher.Invoke((Action)delegate
             {
                
@@ -53,7 +55,7 @@ namespace SignalRClient
               
             }));
 
-            chatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
+            connection.ChatHub.On<Dictionary<string, string>>("SendDict", (dict) =>
             this.Dispatcher.Invoke((Action)delegate
             {
                 Debug.WriteLine("sadas");
@@ -67,7 +69,7 @@ namespace SignalRClient
                 }
             }));
 
-            chatHub.Invoke("SendLoggedUsersDictionary");
+            connection.ChatHub.Invoke("SendLoggedUsersDictionary");
         }
 
       public bool AmILogged(String login)
@@ -85,7 +87,7 @@ namespace SignalRClient
         {
             if(users_list.SelectedIndex == 0)
             {
-                chatHub.Invoke("Send", login, tekst.Text);
+                connection.ChatHub.Invoke("Send", login, tekst.Text);
             }
             else if(users_list.SelectedValue.ToString() == login)
             {
@@ -94,7 +96,7 @@ namespace SignalRClient
             }
             else
             {
-                chatHub.Invoke("SendPrivate", login, users_list.SelectedValue, tekst.Text);
+                connection.ChatHub.Invoke("SendPrivate", login, users_list.SelectedValue, tekst.Text);
             }
           
         }
@@ -105,7 +107,7 @@ namespace SignalRClient
             if (item != null)
             {
 
-                chatHub.Invoke("WhoIsSendingPWToMe", login, item.Content.ToString());
+                connection.ChatHub.Invoke("WhoIsSendingPWToMe", login, item.Content.ToString());
                 // PW_Window pw = new PW_Window(login, item.Content.ToString());
             }
         }
@@ -132,7 +134,7 @@ namespace SignalRClient
 
             if (e.Key == Key.Enter)
             {
-                chatHub.Invoke("Send", login, tekst.Text);
+                connection.ChatHub.Invoke("Send", login, tekst.Text);
                 tekst.Text = "";
             }
         }
@@ -150,8 +152,8 @@ namespace SignalRClient
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            chatHub.Invoke("disconnect",getId());
-            chatHub.Invoke("UnMarkUserByID", login);
+            connection.ChatHub.Invoke("disconnect", getId());
+            connection.ChatHub.Invoke("UnMarkUserByID", login);
         }
 
     }
