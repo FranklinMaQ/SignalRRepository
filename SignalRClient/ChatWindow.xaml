@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SignalRClient.ChatWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ChatWindow" Height="473.527" Width="790.494" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="ChatWindow" Height="507.527" Width="790.494" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid>
 
         <Grid RenderTransformOrigin="0.515,0.499">
@@ -10,7 +10,7 @@
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="klienci" Height="405" VerticalAlignment="Top"/>
+            <ListBox x:Name="chat_messages" Height="405" VerticalAlignment="Top"/>
             <TextBox x:Name="tekst" HorizontalAlignment="Left" Height="23" Margin="10,410,0,0" TextWrapping="Wrap" Text="Wpisz tu swoją wiadomość!" VerticalAlignment="Top" Width="516" PreviewMouseLeftButtonDown="tekst_PreviewMouseLeftButtonDown" KeyDown="tekst_KeyDown"/>
             <Button x:Name="send" Content="Wyślij!" HorizontalAlignment="Left" Margin="542,413,0,0" VerticalAlignment="Top" Width="75" Click="send_Click"/>
 
@@ -21,6 +21,7 @@
                 <ListBoxItem Content="VELO"/>
             </ListBox>
             <Label x:Name="lblLog" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="7,378,0,0" VerticalAlignment="Top" Width="135" Height="58" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <StackPanel x:Name="emotes_panel" HorizontalAlignment="Left" Height="29" Margin="10,438,0,0" VerticalAlignment="Top" Width="607" Orientation="Horizontal"/>
         </Grid>
 
     </Grid>

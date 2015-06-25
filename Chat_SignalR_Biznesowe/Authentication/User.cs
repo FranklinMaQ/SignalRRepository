@@ -11,8 +11,7 @@ namespace Chat_SignalR_Biznesowe.Authentication
     {
         private String username;
         private String password;
-        private Color color;
-        private bool isConnected;
+        
         private String id;
 
         public String Id
@@ -25,7 +24,7 @@ namespace Chat_SignalR_Biznesowe.Authentication
         {
             this.username = username;
             this.password = password;
-            this.color = color;
+           
         }
         public String Username
         {
@@ -39,16 +38,6 @@ namespace Chat_SignalR_Biznesowe.Authentication
             set { password = value; }
         }
        
-        public Color Color
-        {
-            get { return color; }
-            set { color = value; }
-        }
-        
-        public bool IsConnected
-        {
-            get { return isConnected; }
-            set { isConnected = value; }
-        }
+      
     }
 }

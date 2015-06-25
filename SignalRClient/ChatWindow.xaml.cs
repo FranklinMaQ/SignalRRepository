@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -31,6 +32,7 @@ namespace SignalRClient
         public ChatWindow(IChatHubConnection connection, String login)
         {
             InitializeComponent();
+            AddEmoticons();
             this.connection = connection;
        //     this.user_dict = user_dict;
             this.login = login;
@@ -43,7 +45,9 @@ namespace SignalRClient
             this.Dispatcher.Invoke((Action)delegate
             {
                
-                    klienci.Items.Add(String.Format("{0}: {1}\r", name, message));
+                    chat_messages.Items.Add(String.Format("{0}: {1}\r", name, message));
+                    UpdateScrollBar(chat_messages);
+
               
             }));
 
@@ -51,7 +55,7 @@ namespace SignalRClient
             this.Dispatcher.Invoke((Action)delegate
             {
                
-                    klienci.Items.Add(String.Format("PRIV: {0}: {1}\r", to, message));
+                    chat_messages.Items.Add(String.Format("PRIV: {0}: {1}\r", to, message));
               
             }));
 
@@ -149,6 +153,42 @@ namespace SignalRClient
         {
             connection.ChatHub.Invoke("disconnect", getId());
             connection.ChatHub.Invoke("UnMarkUserByID", login);
+        }
+
+        private void UpdateScrollBar(ListBox listBox)
+        {
+            if (listBox != null)
+            {
+                var border = (Border)VisualTreeHelper.GetChild(listBox, 0);
+                var scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+                scrollViewer.ScrollToBottom();
+            }
+
+        }
+
+        private void AddEmoticons()
+        {
+            List<String> emoticons = new List<string>() { ":-)", ";-)", ":-(", ";-(", ":-P", ":-D", ":-X", ":-*", ":-C", ":-/", ":-O", ":-8" };
+
+           foreach(String s in emoticons)
+           {
+                System.Windows.Controls.Button newBtn = new Button();
+
+                newBtn.Content = s;
+                newBtn.Name = "ButtonEmot";
+                newBtn.Width = 50;
+                newBtn.Click += (_sender, _args) =>
+                {
+                    tekst.Text = tekst.Text + " " + s;
+                   
+                    tekst.SelectionStart = tekst.Text.Length;
+                    tekst.SelectionLength = 0;
+                    tekst.Focus();
+                    
+                }; 
+
+                emotes_panel.Children.Add(newBtn);
+            }
         }
 
     }
